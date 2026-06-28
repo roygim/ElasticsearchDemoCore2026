@@ -9,12 +9,28 @@ public class ProductsService: IProductsService
         _repository = repository;
     }
 
-    public async Task AddProductAsync(Product product)
+    public async Task<ResponseObj<Product>> AddProductAsync(Product product)
     {
         if (string.IsNullOrWhiteSpace(product.Name))
-            throw new ArgumentException("Product name is required");
+            return new ResponseObj<Product>
+            {
+                success = false,
+                error = ErrorType.ValidationError,
+                message = "Product name is required"
+            };
+
+        var existing = await _repository.GetByIdAsync(product.Id);
+        if (existing != null)
+            return new ResponseObj<Product>
+            {
+                success = false,
+                error = ErrorType.AlreadyExists,
+                message = $"Product with id {product.Id} already exists"
+            };
 
         await _repository.AddProductAsync(product);
+
+        return new ResponseObj<Product> { success = true, data = product };
     }
 
     public async Task<List<Product>> SearchAsync(string query)

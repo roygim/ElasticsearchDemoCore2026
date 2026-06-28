@@ -1,5 +1,8 @@
 ﻿namespace DemoCore2026.Models;
 
-public class ErrorType
+public enum ErrorType
 {
+    ValidationError,
+    AlreadyExists,
+    NotFound
 }

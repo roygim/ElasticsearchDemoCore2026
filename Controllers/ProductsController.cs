@@ -16,8 +16,13 @@ namespace DemoCore2026.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Product product)
         {
-            await _service.AddProductAsync(product);
-            return Ok();
+            var result = await _service.AddProductAsync(product);
+            if (result.success)
+                return Ok(result);
+
+            return result.error == ErrorType.AlreadyExists
+                ? Conflict(result)
+                : BadRequest(result);
         }
 
         [HttpGet("search")]
