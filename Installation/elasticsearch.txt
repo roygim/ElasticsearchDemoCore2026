@@ -47,7 +47,15 @@ PUT /categories/_doc/4
   "name": "Clothing"
 }
 
+PUT /categories/_doc/5
+{
+  "id": 5,
+  "name": "Food"
+}
+
 GET categories/_search
+
+======================================================
 
 PUT /products
 {
@@ -76,3 +84,86 @@ PUT /products
     }
   }
 }
+
+PUT /products/_doc/1
+{
+  "id": 1,
+  "name": "cat",
+  "price": 10,
+  "categoryId": 1,
+  "categoryName": "Animals"
+}
+
+PUT /products/_doc/2
+{
+  "id": 2,
+  "name": "dog",
+  "price": 10,
+  "categoryId": 1,
+  "categoryName": "Animals"
+}
+
+PUT /products/_doc/3
+{
+  "id": 3,
+  "name": "apple",
+  "price": 10,
+  "categoryId": 0,
+  "categoryName": "Default"
+}
+
+PUT /products/_doc/4
+{
+  "id": 4,
+  "name": "banana",
+  "price": 10,
+  "categoryId": 5,
+  "categoryName": "Food"
+}
+
+PUT /products/_doc/5
+{
+  "id": 5,
+  "name": "orange",
+  "price": 10,
+  "categoryId": 5,
+  "categoryName": "Food"
+}
+
+PUT /products/_doc/6
+{
+  "id": 6,
+  "name": "iPhone 15",
+  "price": 4500,
+  "categoryId": 2,
+  "categoryName": "Electronics"
+}
+
+PUT /products/_doc/7
+{
+  "id": 7,
+  "name": "Harry Potter Book",
+  "price": 60,
+  "categoryId": 3,
+  "categoryName": "Books"
+}
+
+PUT /products/_doc/8
+{
+  "id": 8,
+  "name": "T-Shirt Black",
+  "price": 80,
+  "categoryId": 4,
+  "categoryName": "Clothing"
+}
+
+PUT /products/_doc/9
+{
+  "id": 9,
+  "name": "Running Shoes",
+  "price": 300,
+  "categoryId": 4,
+  "categoryName": "Clothing"
+}
+
+GET products/_search
