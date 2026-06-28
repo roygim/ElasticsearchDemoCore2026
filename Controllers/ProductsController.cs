@@ -36,7 +36,10 @@ namespace DemoCore2026.Controllers
         public async Task<IActionResult> Search(string q)
         {
             var result = await _service.SearchAsync(q);
-            return Ok(result);
+            if (result.success)
+                return Ok(result);
+
+            return BadRequest(result);
         }
 
         [HttpGet("{id}")]

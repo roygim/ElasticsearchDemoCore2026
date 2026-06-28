@@ -33,12 +33,18 @@ public class ProductsService: IProductsService
         return new ResponseObj<Product> { success = true, data = product };
     }
 
-    public async Task<List<Product>> SearchAsync(string query)
+    public async Task<ResponseObj<List<Product>>> SearchAsync(string query)
     {
-        if (string.IsNullOrWhiteSpace(query))
-            return new List<Product>();
+        if (string.IsNullOrWhiteSpace(query) || query.Trim().Length < 2)
+            return new ResponseObj<List<Product>>
+            {
+                success = false,
+                error = ErrorType.ValidationError,
+                message = "Search query must be at least 2 characters"
+            };
 
-        return await _repository.SearchAsync(query);
+        var products = await _repository.SearchAsync(query);
+        return new ResponseObj<List<Product>> { success = true, data = products };
     }
 
     public async Task<List<Product>> GetAllAsync()
