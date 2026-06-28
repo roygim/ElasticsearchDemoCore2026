@@ -27,13 +27,15 @@ Request flow is a strict 3-layer pipeline:
 
 `ProductsController` → `IProductsService` → `IProductsRepository` → Elasticsearch
 
-- **Controllers/** — thin HTTP layer; returns raw `Ok(...)`.
+- **Controllers/** — thin HTTP layer; wraps the service's `ResponseObj` in the appropriate
+  `IActionResult` (`Ok`/`Conflict`/`NotFound`/`BadRequest`).
 - **Services/** — business rules and input validation (e.g. name required, id > 0, empty query
   short-circuits). Put validation/logic here, not in controllers or repositories.
 - **Repositories/** — all Elasticsearch access. Note: `ProductsRepository` constructs its client
   directly via the static `ElasticsearchClientFactory.Create()` rather than via DI.
 - **Entities/** — domain models (`Product`).
-- **Models/** — `ResponseObj<T>` and `ErrorType` exist but are not yet wired into responses.
+- **Models/** — `ResponseObj<T>` and `ErrorType` are the standard response wrapper used across all
+  endpoints.
 
 DI: `IProductsService` and `IProductsRepository` are registered `Scoped` in `Program.cs`.
 
@@ -42,3 +44,5 @@ DI: `IProductsService` and `IProductsRepository` are registered `Scoped` in `Pro
   explicit `using DemoCore2026.*` imports.
 - Nullable reference types and implicit usings are enabled.
 - API routes are under `api/products`.
+- Controller actions must always return a `ResponseObj<T>` (`Models/ResponseObj.cs`) as the standard
+  API response shape — never return raw data or inconsistent response types.
