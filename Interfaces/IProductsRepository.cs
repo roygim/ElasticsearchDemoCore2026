@@ -2,7 +2,7 @@
 
 public interface IProductsRepository
 {
-    Task IndexAsync(Product product);
+    Task AddProductAsync(Product product);
     Task<List<Product>> SearchAsync(string query);
     Task<Product?> GetByIdAsync(int id);
 }

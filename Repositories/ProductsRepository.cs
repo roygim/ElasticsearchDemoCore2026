@@ -12,7 +12,7 @@ public class ProductsRepository: IProductsRepository
         _client = ElasticsearchClientFactory.Create();
     }
 
-    public async Task IndexAsync(Product product)
+    public async Task AddProductAsync(Product product)
     {
         var response = await _client.IndexAsync(product, i => i
            .Index("products")

@@ -14,7 +14,7 @@ public class ProductsService: IProductsService
         if (string.IsNullOrWhiteSpace(product.Name))
             throw new ArgumentException("Product name is required");
 
-        await _repository.IndexAsync(product);
+        await _repository.AddProductAsync(product);
     }
 
     public async Task<List<Product>> SearchAsync(string query)
