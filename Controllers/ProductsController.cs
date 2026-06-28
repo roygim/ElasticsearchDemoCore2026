@@ -35,8 +35,13 @@ namespace DemoCore2026.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await _service.GetByIdAsync(id);
-            return Ok(product);
+            var result = await _service.GetByIdAsync(id);
+            if (result.success)
+                return Ok(result);
+
+            return result.error == ErrorType.NotFound
+                ? NotFound(result)
+                : BadRequest(result);
         }
     }
 }

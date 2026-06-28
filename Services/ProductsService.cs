@@ -41,12 +41,26 @@ public class ProductsService: IProductsService
         return await _repository.SearchAsync(query);
     }
 
-    public async Task<Product?> GetByIdAsync(int id)
+    public async Task<ResponseObj<Product>> GetByIdAsync(int id)
     {
         if (id <= 0)
-            return null;
+            return new ResponseObj<Product>
+            {
+                success = false,
+                error = ErrorType.ValidationError,
+                message = "Product id must be greater than zero"
+            };
 
-        return await _repository.GetByIdAsync(id);
+        var product = await _repository.GetByIdAsync(id);
+        if (product == null)
+            return new ResponseObj<Product>
+            {
+                success = false,
+                error = ErrorType.NotFound,
+                message = $"Product with id {id} was not found"
+            };
+
+        return new ResponseObj<Product> { success = true, data = product };
     }
 }
 
