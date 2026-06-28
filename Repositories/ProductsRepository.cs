@@ -29,11 +29,20 @@ public class ProductsRepository: IProductsRepository
     public async Task<List<Product>> SearchAsync(string query)
     {
         var response = await _client.SearchAsync<Product>(s => s
-            .Index("products")
+            .Index(IndexName)
             .Query(q => q
-                .Match(m => m
-                    .Field(f => f.Name)
-                    .Query(query)
+                .Bool(b => b
+                    .Should(
+                        sh => sh.Wildcard(w => w
+                            .Field(f => f.Name)
+                            .Value($"*{query}*")
+                            .CaseInsensitive(true)),
+                        sh => sh.Wildcard(w => w
+                            .Field(f => f.CategoryName)
+                            .Value($"*{query}*")
+                            .CaseInsensitive(true))
+                    )
+                    .MinimumShouldMatch(1)
                 )
             )
         );
