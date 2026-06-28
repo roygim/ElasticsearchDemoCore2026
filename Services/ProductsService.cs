@@ -41,6 +41,11 @@ public class ProductsService: IProductsService
         return await _repository.SearchAsync(query);
     }
 
+    public async Task<List<Product>> GetAllAsync()
+    {
+        return await _repository.GetAllAsync();
+    }
+
     public async Task<ResponseObj<Product>> GetByIdAsync(int id)
     {
         if (id <= 0)

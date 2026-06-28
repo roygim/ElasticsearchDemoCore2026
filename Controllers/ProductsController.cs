@@ -25,6 +25,13 @@ namespace DemoCore2026.Controllers
                 : BadRequest(result);
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _service.GetAllAsync();
+            return Ok(result);
+        }
+
         [HttpGet("search")]
         public async Task<IActionResult> Search(string q)
         {
