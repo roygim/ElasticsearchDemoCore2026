@@ -13,7 +13,7 @@ namespace DemoCore2026.Controllers
             _service = service;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<IActionResult> Create(Product product)
         {
             var result = await _service.AddProductAsync(product);
