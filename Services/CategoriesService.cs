@@ -33,9 +33,10 @@ public class CategoriesService: ICategoriesService
         return new ResponseObj<Category> { success = true, data = category };
     }
 
-    public async Task<List<Category>> GetAllAsync()
+    public async Task<ResponseObj<List<Category>>> GetAllAsync()
     {
-        return await _repository.GetAllAsync();
+        var categories = await _repository.GetAllAsync();
+        return new ResponseObj<List<Category>> { success = true, data = categories };
     }
 
     public async Task<ResponseObj<Category>> GetByIdAsync(int id)

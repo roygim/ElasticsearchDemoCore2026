@@ -47,9 +47,10 @@ public class ProductsService: IProductsService
         return new ResponseObj<List<Product>> { success = true, data = products };
     }
 
-    public async Task<List<Product>> GetAllAsync()
+    public async Task<ResponseObj<List<Product>>> GetAllAsync()
     {
-        return await _repository.GetAllAsync();
+        var products = await _repository.GetAllAsync();
+        return new ResponseObj<List<Product>> { success = true, data = products };
     }
 
     public async Task<ResponseObj<Product>> GetByIdAsync(int id)
