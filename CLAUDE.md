@@ -7,8 +7,9 @@ Always start every task by entering plan mode behavior: analyze, design steps, a
 before any file changes.
 
 ## Overview
-DemoCore2026 is an ASP.NET Core (`net10.0`) Web API for indexing and searching `Product` records
-in Elasticsearch.
+DemoCore2026 is an ASP.NET Core (`net10.0`) Web API for indexing and searching `Product` and
+`Category` records in Elasticsearch. Key packages: `Elastic.Clients.Elasticsearch` (9.x),
+`Microsoft.AspNetCore.OpenApi`, and `Swashbuckle.AspNetCore` (Swagger).
 
 ## Commands
 - Build: `dotnet build`
@@ -19,30 +20,41 @@ in Elasticsearch.
 
 ## Prerequisites
 The API requires a running Elasticsearch instance at `http://localhost:9200` (hardcoded in
-`Elasticsearch/ElasticsearchClientFactory.cs`). Index name is `products`. Without it, all
+`Elasticsearch/ElasticsearchClientFactory.cs`). Two indices are used: `products` and `categories`.
+Their mappings and seed data are in `Installation/elasticsearch.txt`. Without Elasticsearch, all
 endpoints fail at the repository layer.
 
 ## Architecture
-Request flow is a strict 3-layer pipeline:
+Each resource is a self-contained vertical slice following a strict 3-layer pipeline. Two slices
+exist today — Products and Categories — built from the same pattern:
 
-`ProductsController` → `IProductsService` → `IProductsRepository` → Elasticsearch
+`{Resource}Controller` → `I{Resource}Service` → `I{Resource}Repository` → Elasticsearch
 
 - **Controllers/** — thin HTTP layer; wraps the service's `ResponseObj` in the appropriate
-  `IActionResult` (`Ok`/`Conflict`/`NotFound`/`BadRequest`).
-- **Services/** — business rules and input validation (e.g. name required, id > 0, empty query
-  short-circuits). Put validation/logic here, not in controllers or repositories.
-- **Repositories/** — all Elasticsearch access. Note: `ProductsRepository` constructs its client
-  directly via the static `ElasticsearchClientFactory.Create()` rather than via DI.
-- **Entities/** — domain models (`Product`).
+  `IActionResult` (`Ok`/`Conflict`/`NotFound`/`BadRequest`). Endpoints: `add`, `all`, `{id}`
+  (Products also has `search`).
+- **Services/** — business rules and input validation (e.g. name required, id range checks,
+  duplicate/`NotFound` handling). Put validation/logic here, not in controllers or repositories.
+  Validation can differ per resource — e.g. `ProductsService` rejects `id <= 0`, but
+  `CategoriesService` rejects only `id < 0` because category id `0` ("Default") is valid.
+- **Repositories/** — all Elasticsearch access. Each repository constructs its client directly via
+  the static `ElasticsearchClientFactory.Create()` (not via DI) and hardcodes its own index name
+  (`products` / `categories`).
+- **Entities/** — domain models (`Product`, `Category`).
 - **Models/** — `ResponseObj<T>` and `ErrorType` are the standard response wrapper used across all
   endpoints.
 
-DI: `IProductsService` and `IProductsRepository` are registered `Scoped` in `Program.cs`.
+DI: each slice's `I{Resource}Service` and `I{Resource}Repository` are registered `Scoped` in
+`Program.cs`. `ErrorType` is serialized as a string via a `JsonStringEnumConverter` configured in
+`Program.cs`.
 
 ## Conventions
 - Project-namespace `using`s are centralized in `GlobalUsings.cs` — new files generally don't need
   explicit `using DemoCore2026.*` imports.
 - Nullable reference types and implicit usings are enabled.
-- API routes are under `api/products`.
+- API routes are under `api/{resource}` (e.g. `api/products`, `api/categories`).
+- New resources should mirror the existing slice: add `Entities/`, `Interfaces/I{Resource}Service`
+  + `I{Resource}Repository`, `Services/`, `Repositories/`, a `Controllers/{Resource}Controller`,
+  and register both services `Scoped` in `Program.cs`.
 - Controller actions must always return a `ResponseObj<T>` (`Models/ResponseObj.cs`) as the standard
   API response shape — never return raw data or inconsistent response types.
