@@ -1,0 +1,78 @@
+PUT /categories
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /categories/_doc/0
+{
+  "id": 0,
+  "name": "Default"
+}
+
+PUT /categories/_doc/1
+{
+  "id": 1,
+  "name": "Animals"
+}
+
+PUT /categories/_doc/2
+{
+  "id": 2,
+  "name": "Electronics"
+}
+
+PUT /categories/_doc/3
+{
+  "id": 3,
+  "name": "Books"
+}
+
+PUT /categories/_doc/4
+{
+  "id": 4,
+  "name": "Clothing"
+}
+
+GET categories/_search
+
+PUT /products
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "price": {
+        "type": "double"
+      },
+      "categoryId": {
+        "type": "integer"
+      },
+      "categoryName": {
+        "type": "keyword"
+      }
+    }
+  }
+}
