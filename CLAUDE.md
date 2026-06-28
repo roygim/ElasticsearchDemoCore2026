@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Workflow
+Always start every task by entering plan mode behavior: analyze, design steps, and wait for approval
+before any file changes.
+
 ## Overview
 DemoCore2026 is an ASP.NET Core (`net10.0`) Web API for indexing and searching `Product` records
 in Elasticsearch.
