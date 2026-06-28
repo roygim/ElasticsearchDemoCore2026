@@ -166,4 +166,13 @@ PUT /products/_doc/9
   "categoryName": "Clothing"
 }
 
+PUT /products/_doc/10
+{
+  "id": 10,
+  "name": "Water Bottle",
+  "price": 25,
+  "categoryId": 0,
+  "categoryName": "Default"
+}
+
 GET products/_search
