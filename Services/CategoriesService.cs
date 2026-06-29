@@ -28,6 +28,9 @@ public class CategoriesService: ICategoriesService
                 message = $"Category with id {category.Id} already exists"
             };
 
+        var name = category.Name.Trim();
+        category.Name = char.ToUpper(name[0]) + name[1..];
+
         await _repository.AddCategoryAsync(category);
 
         return new ResponseObj<Category> { success = true, data = category };
