@@ -9,9 +9,9 @@ public class ProductsService: IProductsService
         _repository = repository;
     }
 
-    public async Task<ResponseObj<Product>> AddProductAsync(Product product)
+    public async Task<ResponseObj<Product>> AddProductAsync(CreateProductDto dto)
     {
-        if (string.IsNullOrWhiteSpace(product.Name))
+        if (string.IsNullOrWhiteSpace(dto.Name))
             return new ResponseObj<Product>
             {
                 success = false,
@@ -19,14 +19,23 @@ public class ProductsService: IProductsService
                 message = "Product name is required"
             };
 
-        var existing = await _repository.GetByIdAsync(product.Id);
+        var existing = await _repository.GetByIdAsync(dto.Id);
         if (existing != null)
             return new ResponseObj<Product>
             {
                 success = false,
                 error = ErrorType.AlreadyExists,
-                message = $"Product with id {product.Id} already exists"
+                message = $"Product with id {dto.Id} already exists"
             };
+
+        var product = new Product
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            Price = dto.Price,
+            CategoryId = dto.CategoryId,
+            CategoryName = dto.CategoryName
+        };
 
         await _repository.AddProductAsync(product);
 

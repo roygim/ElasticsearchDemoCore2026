@@ -4,3 +4,4 @@ global using DemoCore2026.Services;
 global using DemoCore2026.Repositories;
 global using DemoCore2026.Elasticsearch;
 global using DemoCore2026.Models;
+global using DemoCore2026.DTOs;

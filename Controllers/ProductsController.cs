@@ -14,9 +14,9 @@ namespace DemoCore2026.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(CreateProductDto dto)
         {
-            var result = await _service.AddProductAsync(product);
+            var result = await _service.AddProductAsync(dto);
             if (result.success)
                 return Ok(result);
 
