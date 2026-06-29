@@ -26,8 +26,8 @@ public class ProductsService: IProductsService
         string categoryName;
         if (dto.CategoryId == null)
         {
-            categoryId = 0;
-            categoryName = "Default";
+            categoryId = Constants.DefaultCategoryId;
+            categoryName = Constants.DefaultCategoryName;
         }
         else
         {
