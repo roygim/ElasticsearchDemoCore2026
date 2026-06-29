@@ -9,27 +9,23 @@ public class CategoriesService: ICategoriesService
         _repository = repository;
     }
 
-    public async Task<ResponseObj<Category>> AddCategoryAsync(Category category)
+    public async Task<ResponseObj<Category>> AddCategoryAsync(CreateCategoryDto dto)
     {
-        if (string.IsNullOrWhiteSpace(category.Name))
-            return new ResponseObj<Category>
-            {
-                success = false,
-                error = ErrorType.ValidationError,
-                message = "Category name is required"
-            };
-
-        var existing = await _repository.GetByIdAsync(category.Id);
+        var existing = await _repository.GetByIdAsync(dto.Id.Value);
         if (existing != null)
             return new ResponseObj<Category>
             {
                 success = false,
                 error = ErrorType.AlreadyExists,
-                message = $"Category with id {category.Id} already exists"
+                message = $"Category with id {dto.Id} already exists"
             };
 
-        var name = category.Name.Trim();
-        category.Name = char.ToUpper(name[0]) + name[1..];
+        var name = dto.Name.Trim();
+        var category = new Category
+        {
+            Id = dto.Id.Value,
+            Name = char.ToUpper(name[0]) + name[1..]
+        };
 
         await _repository.AddCategoryAsync(category);
 

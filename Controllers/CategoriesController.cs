@@ -14,9 +14,9 @@ namespace DemoCore2026.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create(CreateCategoryDto dto)
         {
-            var result = await _service.AddCategoryAsync(category);
+            var result = await _service.AddCategoryAsync(dto);
             if (result.success)
                 return Ok(result);
 
