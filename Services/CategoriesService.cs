@@ -3,10 +3,12 @@ namespace DemoCore2026.Services;
 public class CategoriesService: ICategoriesService
 {
     private readonly ICategoriesRepository _repository;
+    private readonly IProductsRepository _productsRepository;
 
-    public CategoriesService(ICategoriesRepository repository)
+    public CategoriesService(ICategoriesRepository repository, IProductsRepository productsRepository)
     {
         _repository = repository;
+        _productsRepository = productsRepository;
     }
 
     public async Task<ResponseObj<Category>> AddCategoryAsync(CreateCategoryDto dto)
@@ -52,9 +54,20 @@ public class CategoriesService: ICategoriesService
             };
 
         var name = dto.Name.Trim();
-        existing.Name = char.ToUpper(name[0]) + name[1..];
+        var newName = char.ToUpper(name[0]) + name[1..];
 
-        await _repository.UpdateCategoryAsync(existing);
+        if (existing.Name != newName)
+        {
+            existing.Name = newName;
+            await _repository.UpdateCategoryAsync(existing);
+
+            var products = await _productsRepository.GetByCategoryIdAsync(id);
+            foreach (var product in products)
+            {
+                product.CategoryName = newName;
+                await _productsRepository.UpdateProductAsync(product);
+            }
+        }
 
         return new ResponseObj<Category> { success = true, data = existing };
     }
