@@ -16,7 +16,6 @@ namespace DemoCore2026.DTOs
         [Range(0, double.MaxValue, MinimumIsExclusive = true, ErrorMessage = "Price is required and must be greater than zero")]
         public double? Price { get; set; }
 
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

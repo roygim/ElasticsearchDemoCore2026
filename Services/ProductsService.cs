@@ -3,10 +3,12 @@
 public class ProductsService: IProductsService
 {
     private readonly IProductsRepository _repository;
+    private readonly ICategoriesRepository _categoriesRepository;
 
-    public ProductsService(IProductsRepository repository)
+    public ProductsService(IProductsRepository repository, ICategoriesRepository categoriesRepository)
     {
         _repository = repository;
+        _categoriesRepository = categoriesRepository;
     }
 
     public async Task<ResponseObj<Product>> AddProductAsync(CreateProductDto dto)
@@ -20,13 +22,35 @@ public class ProductsService: IProductsService
                 message = $"Product with id {dto.Id} already exists"
             };
 
+        int categoryId;
+        string categoryName;
+        if (dto.CategoryId == null)
+        {
+            categoryId = 0;
+            categoryName = "Default";
+        }
+        else
+        {
+            var category = await _categoriesRepository.GetByIdAsync(dto.CategoryId.Value);
+            if (category == null)
+                return new ResponseObj<Product>
+                {
+                    success = false,
+                    error = ErrorType.ValidationError,
+                    message = $"Category with id {dto.CategoryId} does not exist"
+                };
+
+            categoryId = category.Id;
+            categoryName = category.Name;
+        }
+
         var product = new Product
         {
             Id = dto.Id.Value,
             Name = dto.Name,
             Price = dto.Price.Value,
-            CategoryId = dto.CategoryId,
-            CategoryName = dto.CategoryName
+            CategoryId = categoryId,
+            CategoryName = categoryName
         };
 
         await _repository.AddProductAsync(product);
