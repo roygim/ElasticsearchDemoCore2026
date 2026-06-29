@@ -11,15 +11,7 @@ public class ProductsService: IProductsService
 
     public async Task<ResponseObj<Product>> AddProductAsync(CreateProductDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            return new ResponseObj<Product>
-            {
-                success = false,
-                error = ErrorType.ValidationError,
-                message = "Product name is required"
-            };
-
-        var existing = await _repository.GetByIdAsync(dto.Id);
+        var existing = await _repository.GetByIdAsync(dto.Id.Value);
         if (existing != null)
             return new ResponseObj<Product>
             {
@@ -30,9 +22,9 @@ public class ProductsService: IProductsService
 
         var product = new Product
         {
-            Id = dto.Id,
+            Id = dto.Id.Value,
             Name = dto.Name,
-            Price = dto.Price,
+            Price = dto.Price.Value,
             CategoryId = dto.CategoryId,
             CategoryName = dto.CategoryName
         };
