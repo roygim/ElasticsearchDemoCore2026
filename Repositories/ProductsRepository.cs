@@ -26,6 +26,19 @@ public class ProductsRepository: IProductsRepository
         }
     }
 
+    public async Task UpdateProductAsync(Product product)
+    {
+        var response = await _client.IndexAsync(product, i => i
+           .Index(IndexName)
+           .Id(product.Id.ToString())
+        );
+
+        if (!response.IsValidResponse)
+        {
+            throw new Exception("Product update failed");
+        }
+    }
+
     public async Task<List<Product>> SearchAsync(string query)
     {
         var response = await _client.SearchAsync<Product>(s => s

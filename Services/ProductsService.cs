@@ -58,6 +58,51 @@ public class ProductsService: IProductsService
         return new ResponseObj<Product> { success = true, data = product };
     }
 
+    public async Task<ResponseObj<Product>> UpdateProductAsync(int id, UpdateProductDto dto)
+    {
+        if (id <= 0)
+            return new ResponseObj<Product>
+            {
+                success = false,
+                error = ErrorType.ValidationError,
+                message = "Product id must be greater than zero"
+            };
+
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing == null)
+            return new ResponseObj<Product>
+            {
+                success = false,
+                error = ErrorType.NotFound,
+                message = $"Product with id {id} was not found"
+            };
+
+        if (dto.Name != null)
+            existing.Name = dto.Name;
+
+        if (dto.Price != null)
+            existing.Price = dto.Price.Value;
+
+        if (dto.CategoryId != null)
+        {
+            var category = await _categoriesRepository.GetByIdAsync(dto.CategoryId.Value);
+            if (category == null)
+                return new ResponseObj<Product>
+                {
+                    success = false,
+                    error = ErrorType.ValidationError,
+                    message = $"Category with id {dto.CategoryId} does not exist"
+                };
+
+            existing.CategoryId = category.Id;
+            existing.CategoryName = category.Name;
+        }
+
+        await _repository.UpdateProductAsync(existing);
+
+        return new ResponseObj<Product> { success = true, data = existing };
+    }
+
     public async Task<ResponseObj<List<Product>>> SearchAsync(string query)
     {
         if (string.IsNullOrWhiteSpace(query) || query.Trim().Length < 2)
