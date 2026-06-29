@@ -34,10 +34,10 @@ public class CategoriesService: ICategoriesService
         return new ResponseObj<Category> { success = true, data = category };
     }
 
-    public async Task<ResponseObj<Category>> UpdateCategoryAsync(int id, UpdateCategoryDto dto)
+    public async Task<ResponseObj<UpdateCategoryResult>> UpdateCategoryAsync(int id, UpdateCategoryDto dto)
     {
         if (id < 0)
-            return new ResponseObj<Category>
+            return new ResponseObj<UpdateCategoryResult>
             {
                 success = false,
                 error = ErrorType.ValidationError,
@@ -46,7 +46,7 @@ public class CategoriesService: ICategoriesService
 
         var existing = await _repository.GetByIdAsync(id);
         if (existing == null)
-            return new ResponseObj<Category>
+            return new ResponseObj<UpdateCategoryResult>
             {
                 success = false,
                 error = ErrorType.NotFound,
@@ -56,6 +56,7 @@ public class CategoriesService: ICategoriesService
         var name = dto.Name.Trim();
         var newName = char.ToUpper(name[0]) + name[1..];
 
+        var updatedProductsCount = 0;
         if (existing.Name != newName)
         {
             existing.Name = newName;
@@ -67,9 +68,18 @@ public class CategoriesService: ICategoriesService
                 product.CategoryName = newName;
                 await _productsRepository.UpdateProductAsync(product);
             }
+            updatedProductsCount = products.Count;
         }
 
-        return new ResponseObj<Category> { success = true, data = existing };
+        return new ResponseObj<UpdateCategoryResult>
+        {
+            success = true,
+            data = new UpdateCategoryResult
+            {
+                Category = existing,
+                UpdatedProductsCount = updatedProductsCount
+            }
+        };
     }
 
     public async Task<ResponseObj<List<Category>>> GetAllAsync()
