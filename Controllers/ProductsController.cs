@@ -42,6 +42,16 @@ namespace DemoCore2026.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> GetByCategory(int categoryId)
+        {
+            var result = await _service.GetByCategoryIdAsync(categoryId);
+            if (result.success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

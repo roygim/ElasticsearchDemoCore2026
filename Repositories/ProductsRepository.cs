@@ -67,6 +67,22 @@ public class ProductsRepository: IProductsRepository
             .ToList()!;
     }
 
+    public async Task<List<Product>> GetByCategoryIdAsync(int categoryId)
+    {
+        var response = await _client.SearchAsync<Product>(s => s
+            .Index(IndexName)
+            .Size(1000)
+            .Query(q => q
+                .Term(t => t.Field(f => f.CategoryId).Value(categoryId))
+            )
+        );
+
+        return response.Hits
+            .Select(h => h.Source)
+            .Where(x => x != null)
+            .ToList()!;
+    }
+
     public async Task<Product?> GetByIdAsync(int id)
     {
         var response = await _client.GetAsync<Product>(id.ToString(), g => g

@@ -78,6 +78,20 @@ public class ProductsService: IProductsService
         return new ResponseObj<List<Product>> { success = true, data = products };
     }
 
+    public async Task<ResponseObj<List<Product>>> GetByCategoryIdAsync(int categoryId)
+    {
+        if (categoryId < 0)
+            return new ResponseObj<List<Product>>
+            {
+                success = false,
+                error = ErrorType.ValidationError,
+                message = "Category id must be zero or greater"
+            };
+
+        var products = await _repository.GetByCategoryIdAsync(categoryId);
+        return new ResponseObj<List<Product>> { success = true, data = products };
+    }
+
     public async Task<ResponseObj<Product>> GetByIdAsync(int id)
     {
         if (id <= 0)
