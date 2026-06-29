@@ -12,9 +12,9 @@ namespace DemoCore2026.DTOs
         [MinLength(2, ErrorMessage = "Name is required and must be at least 2 characters")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Price is required and must be greater than zero")]
-        [Range(0, double.MaxValue, MinimumIsExclusive = true, ErrorMessage = "Price is required and must be greater than zero")]
-        public double? Price { get; set; }
+        [Required(ErrorMessage = "Price is required")]
+        [Range(typeof(decimal), "0.01", "999999999999.99", ErrorMessage = "Price must be between 0.01 and 999999999999.99")]
+        public decimal? Price { get; set; }
 
         public int? CategoryId { get; set; }
     }
