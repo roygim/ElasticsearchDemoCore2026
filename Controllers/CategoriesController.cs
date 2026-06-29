@@ -32,6 +32,18 @@ namespace DemoCore2026.Controllers
             return Ok(result);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateCategoryDto dto)
+        {
+            var result = await _service.UpdateCategoryAsync(id, dto);
+            if (result.success)
+                return Ok(result);
+
+            return result.error == ErrorType.NotFound
+                ? NotFound(result)
+                : BadRequest(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

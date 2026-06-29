@@ -26,6 +26,19 @@ public class CategoriesRepository: ICategoriesRepository
         }
     }
 
+    public async Task UpdateCategoryAsync(Category category)
+    {
+        var response = await _client.IndexAsync(category, i => i
+           .Index(IndexName)
+           .Id(category.Id.ToString())
+        );
+
+        if (!response.IsValidResponse)
+        {
+            throw new Exception("Category update failed");
+        }
+    }
+
     public async Task<List<Category>> GetAllAsync()
     {
         var response = await _client.SearchAsync<Category>(s => s

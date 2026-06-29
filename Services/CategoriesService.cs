@@ -32,6 +32,33 @@ public class CategoriesService: ICategoriesService
         return new ResponseObj<Category> { success = true, data = category };
     }
 
+    public async Task<ResponseObj<Category>> UpdateCategoryAsync(int id, UpdateCategoryDto dto)
+    {
+        if (id < 0)
+            return new ResponseObj<Category>
+            {
+                success = false,
+                error = ErrorType.ValidationError,
+                message = "Category id must be zero or greater"
+            };
+
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing == null)
+            return new ResponseObj<Category>
+            {
+                success = false,
+                error = ErrorType.NotFound,
+                message = $"Category with id {id} was not found"
+            };
+
+        var name = dto.Name.Trim();
+        existing.Name = char.ToUpper(name[0]) + name[1..];
+
+        await _repository.UpdateCategoryAsync(existing);
+
+        return new ResponseObj<Category> { success = true, data = existing };
+    }
+
     public async Task<ResponseObj<List<Category>>> GetAllAsync()
     {
         var categories = await _repository.GetAllAsync();
