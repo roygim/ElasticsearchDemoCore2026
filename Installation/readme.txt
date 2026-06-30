@@ -2,7 +2,7 @@
 1. install docker
 2. open powershell
 3. go to - cd ../ElasticsearchDemoCore2026/Infra/Docker
-4. run - docker compose -p ElasticsearchDemoCore2026 up -d
+4. run - docker compose -p elasticsearchdemo up -d
 
 ===========================================================
 
