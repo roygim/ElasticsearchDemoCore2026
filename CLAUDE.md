@@ -7,7 +7,7 @@ Always start every task by entering plan mode behavior: analyze, design steps, a
 before any file changes.
 
 ## Overview
-DemoCore2026 is an ASP.NET Core (`net10.0`) Web API for indexing and searching `Product` and
+ElasticsearchDemoCore2026 is an ASP.NET Core (`net10.0`) Web API for indexing and searching `Product` and
 `Category` records in Elasticsearch. Key packages: `Elastic.Clients.Elasticsearch` (9.x),
 `Microsoft.AspNetCore.OpenApi`, and `Swashbuckle.AspNetCore` (Swagger).
 
@@ -50,7 +50,7 @@ DI: each slice's `I{Resource}Service` and `I{Resource}Repository` are registered
 
 ## Conventions
 - Project-namespace `using`s are centralized in `GlobalUsings.cs` — new files generally don't need
-  explicit `using DemoCore2026.*` imports.
+  explicit `using ElasticsearchDemoCore2026.*` imports.
 - Nullable reference types and implicit usings are enabled.
 - API routes are under `api/{resource}` (e.g. `api/products`, `api/categories`).
 - New resources should mirror the existing slice: add `Entities/`, `Interfaces/I{Resource}Service`

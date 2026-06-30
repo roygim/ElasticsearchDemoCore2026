@@ -1,4 +1,4 @@
-﻿namespace DemoCore2026.Interfaces;
+﻿namespace ElasticsearchDemoCore2026.Interfaces;
 
 public interface IProductsRepository
 {

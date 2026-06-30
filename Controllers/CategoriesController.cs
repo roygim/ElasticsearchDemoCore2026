@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DemoCore2026.Controllers
+namespace ElasticsearchDemoCore2026.Controllers
 {
     [ApiController]
     [Route("api/categories")]

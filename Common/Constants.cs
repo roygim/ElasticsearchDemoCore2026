@@ -1,4 +1,4 @@
-﻿namespace DemoCore2026.Common;
+﻿namespace ElasticsearchDemoCore2026.Common;
 
 public static class Constants
 {

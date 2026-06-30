@@ -1,4 +1,4 @@
-namespace DemoCore2026.DTOs
+namespace ElasticsearchDemoCore2026.DTOs
 {
     public class UpdateCategoryResult
     {

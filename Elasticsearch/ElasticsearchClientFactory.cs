@@ -1,6 +1,6 @@
 ﻿using Elastic.Clients.Elasticsearch;
 
-namespace DemoCore2026.Elasticsearch;
+namespace ElasticsearchDemoCore2026.Elasticsearch;
 
 public static class ElasticsearchClientFactory
 {

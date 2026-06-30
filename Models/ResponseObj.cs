@@ -1,4 +1,4 @@
-﻿namespace DemoCore2026.Models;
+﻿namespace ElasticsearchDemoCore2026.Models;
 
 public class ResponseObj<T>
 {

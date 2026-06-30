@@ -1,4 +1,4 @@
-﻿namespace DemoCore2026.Entities;
+﻿namespace ElasticsearchDemoCore2026.Entities;
 public class Product
 {
     public int Id { get; set; }

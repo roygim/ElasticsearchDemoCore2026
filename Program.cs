@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.DocumentTitle = "Swagger UI - Demo Core");
+    app.UseSwaggerUI(c => c.DocumentTitle = "Swagger UI - Elasticsearch Demo Core");
 }
 
 app.UseHttpsRedirection();

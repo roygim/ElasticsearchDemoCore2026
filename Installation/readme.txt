@@ -1,8 +1,8 @@
 ﻿For elasticsearch and kibana installation:
 1. install docker
 2. open powershell
-3. go to - cd ../DemoCore2026/Infra/Docker
-4. run - docker compose -p DemoCore2026 up -d
+3. go to - cd ../ElasticsearchDemoCore2026/Infra/Docker
+4. run - docker compose -p ElasticsearchDemoCore2026 up -d
 
 ===========================================================
 

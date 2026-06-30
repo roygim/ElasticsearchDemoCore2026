@@ -1,4 +1,4 @@
-﻿namespace DemoCore2026.Services;
+﻿namespace ElasticsearchDemoCore2026.Services;
 
 public class ProductsService: IProductsService
 {

@@ -1,6 +1,6 @@
 ﻿using Elastic.Clients.Elasticsearch;
 
-namespace DemoCore2026.Repositories;
+namespace ElasticsearchDemoCore2026.Repositories;
 
 public class ProductsRepository: IProductsRepository
 {
